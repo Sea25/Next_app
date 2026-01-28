@@ -12,9 +12,6 @@ import '../../view/profile/company_profile.dart' as company_profile;
 import '../../view/meetings/meeting_screen.dart';
 import '../../common_widget/company_post.dart' as company_post;
 import '../analytics/pairing_screen.dart';
-import '../../view/subscription/subscription_screen.dart';
-import 'search_screen.dart';
-import '../../services/post_service.dart';
 import 'search_screen.dart';
 import '../../view/subscription/subscription_screen.dart';
 
@@ -395,36 +392,9 @@ class _CompanyHomeScreenState extends State<CompanyHomeScreen>
   Future<void> _loadPosts() async {
     setState(() => _isLoadingPosts = true);
     try {
-      // Import the PostService
-      final postService = PostService();
-
-      print('📊 Loaded ${posts.length} posts from Supabase');
-
-      // Normalize the data structure
-      final normalizedPosts =
-          posts.map((post) {
-            return {
-              'id': post['id'],
-              'user_id': post['user_id'],
-              'user_type': post['profiles']?['user_type'] ?? 'startup',
-              'author_name': post['profiles']?['name'] ?? 'Unknown',
-              'avatar_url': post['profiles']?['avatar_url'] ?? '',
-              'title': post['title'] ?? '',
-              'description': post['description'] ?? '',
-              'image_urls': List<String>.from(post['image_urls'] ?? []),
-              'tags': List<String>.from(post['tags'] ?? []),
-              'created_at': post['created_at'],
-              'isLiked': false,
-              'likeCount': 0,
-              'comments': [],
-            };
-          }).toList();
-
-      setState(() {
-        _posts = normalizedPosts;
-      });
       final response = await http.get(
         Uri.parse('https://indianrupeeservices.in/NEXT/backend/get_posts.php'),
+      );
       if (response.statusCode == 200) {
         final Map<String, dynamic> data = jsonDecode(response.body);
         if (data['success'] == true && data['posts'] != null) {
@@ -471,6 +441,7 @@ class _CompanyHomeScreenState extends State<CompanyHomeScreen>
       }
     } catch (e) {
       print('❌ Error loading posts: $e');
+      // Fallback to empty list
       setState(() {
         _posts = [];
       });
@@ -621,7 +592,6 @@ class _CompanyHomeScreenState extends State<CompanyHomeScreen>
           onTap: () {
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => SubscriptionScreen()),
               MaterialPageRoute(
                 builder: (context) => const SubscriptionScreen(),
               ),

@@ -49,7 +49,6 @@ class _LoginViewState extends State<LoginView> {
         print('✅ Supabase login successful! User ID: ${response.user!.id}');
         _showSnackBar('Login successful!');
         
-        // Store user ID (Supabase UUID)
         // Store user ID (Supabase UUID) and user type
         final userId = response.user!.id;
         const storage = FlutterSecureStorage();
@@ -58,7 +57,6 @@ class _LoginViewState extends State<LoginView> {
         
         final prefs = await SharedPreferences.getInstance();
         await prefs.setString('user_id', userId);
-
         await prefs.setString('user_type', userType);
         _navigateToUserScreen(userType);
       } else {
