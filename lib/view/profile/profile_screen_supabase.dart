@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
-import '../services/profile_service.dart';
-import '../services/post_service.dart';
+import '../../services/profile_service.dart';
+import '../../services/post_service.dart';
 
 /// Modern Profile Screen with Supabase Integration and Follow System
 class ProfileScreenSupabase extends StatefulWidget {

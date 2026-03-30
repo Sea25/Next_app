@@ -177,10 +177,11 @@ class ProfileService {
     try {
       final response = await _supabase
           .from('follows')
-          .select('id', const FetchOptions(count: CountOption.exact))
-          .eq('following_id', userId);
+          .select()
+          .eq('following_id', userId)
+          .count();
 
-      return response.count ?? 0;
+      return response.count;
     } catch (e) {
       print('❌ Error getting follower count: $e');
       return 0;
@@ -192,10 +193,11 @@ class ProfileService {
     try {
       final response = await _supabase
           .from('follows')
-          .select('id', const FetchOptions(count: CountOption.exact))
-          .eq('follower_id', userId);
+          .select()
+          .eq('follower_id', userId)
+          .count();
 
-      return response.count ?? 0;
+      return response.count;
     } catch (e) {
       print('❌ Error getting following count: $e');
       return 0;
